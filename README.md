@@ -1,5 +1,7 @@
 # SimpleDi
 
+![build](https://api.travis-ci.org/nerdbeere/simpledi.svg?branch=master)
+
 SimpleDi is a very simple dependency injector without any dependencies.
 
 ## Example
