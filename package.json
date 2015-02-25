@@ -1,0 +1,22 @@
+{
+  "name": "simpledi",
+  "version": "1.0.0",
+  "description": "A simple dependency injector",
+  "main": "src/simpledi.js",
+  "scripts": {
+    "lint": "jshint src test && jscs src test",
+    "test": "istanbul test _mocha  -- --reporter dot --recursive -r setup-referee-sinon/globals test"
+  },
+  "author": "Julian Hollmann <hollmann@uxebu.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "istanbul": "^0.3.6",
+    "jscs": "^1.11.3",
+    "jshint": "^2.6.0",
+    "mocha": "^2.1.0",
+    "referee": "^1.1.1",
+    "referee-sinon": "^1.0.2",
+    "setup-referee-sinon": "^0.2.0",
+    "sinon": "^1.12.2"
+  }
+}
