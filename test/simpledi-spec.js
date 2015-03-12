@@ -26,7 +26,7 @@ describe('SimpleDi', function() {
     expect(di.get('Foo') instanceof Foo).toBe(true);
   });
 
-  it('resolves dependencies', function() {
+  it('resolves a dependency', function() {
     function Foo(bar) {
       this.bar = bar;
     }
@@ -39,6 +39,27 @@ describe('SimpleDi', function() {
     di.register('Bar', SimpleDi.constructorFactory(Bar));
 
     expect(di.get('Foo').bar instanceof Bar).toBe(true);
+  });
+
+  it('resolves multiple dependencies', function() {
+    function Foo(bar, baz) {
+      this.bar = bar;
+      this.baz = baz;
+    }
+
+    function Bar() {
+      this.bar = true;
+    }
+
+    function Baz() {
+      this.baz = true;
+    }
+
+    di.register('Foo', SimpleDi.constructorFactory(Foo), ['Bar', 'Baz']);
+    di.register('Bar', SimpleDi.constructorFactory(Bar));
+    di.register('Baz', SimpleDi.constructorFactory(Baz));
+
+    expect(di.get('Foo').baz instanceof Baz).toBe(true);
   });
 
 });

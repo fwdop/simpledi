@@ -36,7 +36,8 @@ proto.getRegistryItem = function(name) {
 };
 
 SimpleDi.constructorFactory = function(Constructor) {
-  return function(deps) {
+  return function() {
+    var deps = Array.prototype.slice.call(arguments);
     var thisArg = {};
     var NewConstructor = Constructor.bind.apply(Constructor, [thisArg].concat(deps));
     return new NewConstructor();
