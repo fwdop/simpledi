@@ -1,7 +1,8 @@
 'use strict';
 
-var bind = require('lodash-compat/function/bind');
-var forEach = require('lodash-compat/collection/forEach');
+if(typeof Function.prototype.bind === 'undefined') {
+  Function.prototype.bind = require('function-bind');
+}
 
 function SimpleDi() {
   this._registry = {};
@@ -25,13 +26,15 @@ proto.get = function(name) {
   if (!registryItem) {
     throw new Error('couldn\'t find module: ' + name);
   }
-  var deps = [];
-  forEach(registryItem.dependencies, bind(function(name) {
-    deps.push(this.get(name));
-  }, this));
+  var resolvedDeps = [];
+  var deps = registryItem.dependencies;
+  for(var i = 0; i < deps.length; i++) {
+    var name = deps[i];
+    resolvedDeps.push(this.get(name));
+  }
 
   var thisArg = {};
-  return registryItem.factory.apply(thisArg, deps);
+  return registryItem.factory.apply(thisArg, resolvedDeps);
 };
 
 proto.getRegistryItem = function(name) {
@@ -42,7 +45,7 @@ SimpleDi.constructorFactory = function(Constructor) {
   return function() {
     var deps = Array.prototype.slice.call(arguments);
     var thisArg = {};
-    var NewConstructor = bind.apply(Constructor, [Constructor, thisArg].concat(deps));
+    var NewConstructor = Constructor.bind.apply(Constructor, [thisArg].concat(deps));
     return new NewConstructor();
   };
 };

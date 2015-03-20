@@ -11,7 +11,7 @@ SimpleDi is a very simple dependency injector.
 
 ## Compatibility
 
-SimpleDi uses `lodash-compat` and is compatible with ES3 compliant browsers.
+SimpleDi is compatible with ES3 compliant browsers
 
 ## Example
 

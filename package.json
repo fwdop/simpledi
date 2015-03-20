@@ -1,6 +1,6 @@
 {
   "name": "simpledi",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple dependency injector",
   "main": "src/simpledi.js",
   "config": {
@@ -26,6 +26,6 @@
     "uglify-js": "^2.4.17"
   },
   "dependencies": {
-    "lodash-compat": "^3.5.0"
+    "function-bind": "^1.0.2"
   }
 }
