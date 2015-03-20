@@ -1,5 +1,8 @@
 'use strict';
 
+var bind = require('lodash-compat/function/bind');
+var forEach = require('lodash-compat/collection/forEach');
+
 function SimpleDi() {
   this._registry = {};
 }
@@ -23,9 +26,9 @@ proto.get = function(name) {
     throw new Error('couldn\'t find module: ' + name);
   }
   var deps = [];
-  registryItem.dependencies.forEach((function(name) {
+  forEach(registryItem.dependencies, bind(function(name) {
     deps.push(this.get(name));
-  }).bind(this));
+  }, this));
 
   var thisArg = {};
   return registryItem.factory.apply(thisArg, deps);
@@ -39,7 +42,7 @@ SimpleDi.constructorFactory = function(Constructor) {
   return function() {
     var deps = Array.prototype.slice.call(arguments);
     var thisArg = {};
-    var NewConstructor = Constructor.bind.apply(Constructor, [thisArg].concat(deps));
+    var NewConstructor = bind.apply(Constructor, [Constructor, thisArg].concat(deps));
     return new NewConstructor();
   };
 };

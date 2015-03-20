@@ -1,15 +1,20 @@
 {
   "name": "simpledi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple dependency injector",
   "main": "src/simpledi.js",
+  "config": {
+    "namespace": "simpleDi"
+  },
   "scripts": {
     "lint": "jshint src test && jscs src test",
-    "test": "istanbul test _mocha  -- --reporter dot --recursive -r setup-referee-sinon/globals test"
+    "test": "istanbul test _mocha  -- --reporter dot --recursive -r setup-referee-sinon/globals test",
+    "build": "mkdir -p dist && npm install && NODE_ENV=production browserify src/simpledi.js --insert-global-vars global -s $npm_package_config_namespace > dist/$npm_package_config_namespace.max.js && uglifyjs dist/$npm_package_config_namespace.max.js -cm > dist/$npm_package_config_namespace.js"
   },
   "author": "Julian Hollmann <hollmann@uxebu.com>",
   "license": "MIT",
   "devDependencies": {
+    "browserify": "^9.0.3",
     "istanbul": "^0.3.6",
     "jscs": "^1.11.3",
     "jshint": "^2.6.0",
@@ -17,6 +22,10 @@
     "referee": "^1.1.1",
     "referee-sinon": "^1.0.2",
     "setup-referee-sinon": "^0.2.0",
-    "sinon": "^1.12.2"
+    "sinon": "^1.12.2",
+    "uglify-js": "^2.4.17"
+  },
+  "dependencies": {
+    "lodash-compat": "^3.5.0"
   }
 }
