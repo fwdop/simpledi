@@ -62,4 +62,14 @@ describe('SimpleDi', function() {
     expect(di.get('Foo').baz instanceof Baz).toBe(true);
   });
 
+  it('provides a static identity function that returns always the same object', function() {
+    var dep = {
+      foo: true
+    };
+
+    di.register('foo', SimpleDi.always(dep));
+
+    expect(di.get('foo')).toBe(dep);
+  });
+
 });

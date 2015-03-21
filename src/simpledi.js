@@ -50,4 +50,10 @@ SimpleDi.constructorFactory = function(Constructor) {
   };
 };
 
+SimpleDi.always = function(obj) {
+  return function() {
+    return obj;
+  }
+};
+
 module.exports = SimpleDi;
