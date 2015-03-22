@@ -11,12 +11,10 @@ function Car(engine) {
 }
 
 di.register('Engine', SimpleDi.withNew(Engine), ['engineConfig']);
-di.register('engineConfig', function() {
-    return {
-        hp: 120,
-        maxSpeed: 200
-    };
-});
+di.register('engineConfig', SimpleDi.always({
+    hp: 120,
+    maxSpeed: 200
+}));
 di.register('Car', SimpleDi.withNew(Car), ['Engine']);
 
 var car = di.get('Car');
