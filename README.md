@@ -13,6 +13,30 @@ SimpleDi is a very simple dependency injector.
 
 SimpleDi is compatible with ES3 compliant browsers
 
+## Api
+
+### `di.register(…)`
+
+#### Parameters:
+
+Name | Type | Description
+-----|------|------------
+dependencyName | `string` | The name of the dependency
+factoryFunction | `function` | A function that gets called when get is called
+dependencies | `array<string>` | *optional* An array of depdendency names
+
+Adds a dependency to the registry.
+
+### `di.get(…)`
+
+#### Parameters:
+
+Name | Type | Description
+-----|------|------------
+dependencyName | `string` | The name of the dependency
+
+Returns a previously registered dependency and resolves all dependencies.
+
 ## Example
 
 ```javascript
