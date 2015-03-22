@@ -21,7 +21,7 @@ describe('SimpleDi', function() {
     function Foo() {
     }
 
-    di.register('Foo', SimpleDi.constructorFactory(Foo));
+    di.register('Foo', SimpleDi.withNew(Foo));
 
     expect(di.get('Foo') instanceof Foo).toBe(true);
   });
@@ -35,8 +35,8 @@ describe('SimpleDi', function() {
 
     }
 
-    di.register('Foo', SimpleDi.constructorFactory(Foo), ['Bar']);
-    di.register('Bar', SimpleDi.constructorFactory(Bar));
+    di.register('Foo', SimpleDi.withNew(Foo), ['Bar']);
+    di.register('Bar', SimpleDi.withNew(Bar));
 
     expect(di.get('Foo').bar instanceof Bar).toBe(true);
   });
@@ -55,9 +55,9 @@ describe('SimpleDi', function() {
       this.baz = true;
     }
 
-    di.register('Foo', SimpleDi.constructorFactory(Foo), ['Bar', 'Baz']);
-    di.register('Bar', SimpleDi.constructorFactory(Bar));
-    di.register('Baz', SimpleDi.constructorFactory(Baz));
+    di.register('Foo', SimpleDi.withNew(Foo), ['Bar', 'Baz']);
+    di.register('Bar', SimpleDi.withNew(Bar));
+    di.register('Baz', SimpleDi.withNew(Baz));
 
     expect(di.get('Foo').baz instanceof Baz).toBe(true);
   });

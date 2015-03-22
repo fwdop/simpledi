@@ -41,7 +41,7 @@ proto.getRegistryItem = function(name) {
   return this._registry[name];
 };
 
-SimpleDi.constructorFactory = function(Constructor) {
+SimpleDi.withNew = function(Constructor) {
   return function() {
     var deps = Array.prototype.slice.call(arguments);
     var thisArg = {};
