@@ -21,6 +21,12 @@ proto.register = function(name, factory, dependencies) {
   };
 };
 
+proto.registerBulk = function(deps) {
+  for(var i = 0; i < deps.length; i++) {
+    this.register.apply(this, deps[i]);
+  }
+};
+
 proto.get = function(name) {
   var registryItem = this.getRegistryItem(name);
   if (!registryItem) {

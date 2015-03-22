@@ -72,4 +72,31 @@ describe('SimpleDi', function() {
     expect(di.get('foo')).toBe(dep);
   });
 
+  it('registers multiple dependencies at once with registerBulk', function() {
+    function Foo(bar, baz) {
+      this.bar = bar;
+      this.baz = baz;
+    }
+
+    function Bar() {
+      this.bar = true;
+    }
+
+    function Baz() {
+      this.baz = true;
+    }
+
+    di.register('Foo', SimpleDi.withNew(Foo), ['Bar', 'Baz']);
+    di.register('Bar', SimpleDi.withNew(Bar));
+    di.register('Baz', SimpleDi.withNew(Baz));
+
+    di.registerBulk([
+      ['Foo', SimpleDi.withNew(Foo), ['Bar', 'Baz']],
+      ['Bar', SimpleDi.withNew(Bar)],
+      ['Baz', SimpleDi.withNew(Baz)]
+    ]);
+
+    expect(di.get('Foo').baz instanceof Baz).toBe(true);
+  });
+
 });
