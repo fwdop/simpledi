@@ -27,6 +27,23 @@ dependencies | `array<string>` | *optional* An array of depdendency names
 
 Adds a dependency to the registry.
 
+### `di.registerBulk(…)`
+
+#### Parameters:
+
+Name | Type | Description
+-----|------|------------
+dependencies | `array` | An array of dependencies containing arrays
+
+#### Example:
+
+```javascript
+di.registerBulk([
+    ['foo', this.always({foo: true})],
+    ['Bar', this.withNew(Bar), ['foo']],
+]);
+```
+
 ### `di.get(…)`
 
 #### Parameters:
@@ -36,6 +53,24 @@ Name | Type | Description
 dependencyName | `string` | The name of the dependency
 
 Returns a previously registered dependency and resolves all dependencies.
+
+## Built-in factory functions
+
+### `SimpleDi.always(…)`
+
+Name | Type | Description
+-----|------|------------
+objectOrFunction | `anything` | Always returns this argument
+
+A factory function that always returns the first argument when `di.get` is called.
+
+### `SimpleDi.withNew(…)`
+
+Name | Type | Description
+-----|------|------------
+Constructor | `function` | A constructor function
+
+When `di.get` is called this factory function will initialize the given constructor with new.
 
 ## Example
 
@@ -52,14 +87,12 @@ function Car(engine) {
     this.text = 'This car has ' + engine.hp + 'hp!';
 }
 
-di.register('Engine', SimpleDi.constructorFactory(Engine), ['engineConfig']);
-di.register('engineConfig', function() {
-    return {
-        hp: 120,
-        maxSpeed: 200
-    };
-});
-di.register('Car', SimpleDi.constructorFactory(Car), ['Engine']);
+di.register('Engine', SimpleDi.withNew(Engine), ['engineConfig']);
+di.register('engineConfig', SimpleDi.always({
+    hp: 120,
+    maxSpeed: 200
+}));
+di.register('Car', SimpleDi.withNew(Car), ['Engine']);
 
 var car = di.get('Car');
 
