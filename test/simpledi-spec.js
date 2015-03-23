@@ -17,6 +17,24 @@ describe('SimpleDi', function() {
     expect(di.get('foo')).toBe(obj);
   });
 
+  it('throws when register implicitly overwrites a dependency', function() {
+    var obj = {foo: true};
+    di.register('foo', SimpleDi.always(obj));
+
+    expect(function() {
+      di.register('foo', SimpleDi.always(obj));
+    }).toThrow();
+  });
+
+  it('does not throw when register explicitly overwrites a dependency', function() {
+    var obj = {foo: true};
+    di.register('foo', SimpleDi.always(obj));
+
+    expect(function() {
+      di.register('foo', SimpleDi.always(obj), [], true);
+    }).not.toThrow();
+  });
+
   it('registers and gets a constructor using the helper factory', function() {
     function Foo() {
     }
@@ -85,10 +103,6 @@ describe('SimpleDi', function() {
     function Baz() {
       this.baz = true;
     }
-
-    di.register('Foo', SimpleDi.withNew(Foo), ['Bar', 'Baz']);
-    di.register('Bar', SimpleDi.withNew(Bar));
-    di.register('Baz', SimpleDi.withNew(Baz));
 
     di.registerBulk([
       ['Foo', SimpleDi.withNew(Foo), ['Bar', 'Baz']],

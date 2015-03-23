@@ -24,8 +24,10 @@ Name | Type | Description
 dependencyName | `string` | The name of the dependency
 factoryFunction | `function` | A function that gets called when get is called
 dependencies | `array<string>` | *optional* An array of depdendency names
+overwrite | `boolean` | *optional* This allows to explicitly overwrite dependencies
 
 Adds a dependency to the registry.
+It throws an exception when a dependency with the same name already exists and overwrite true is not passed.
 
 ### `di.registerBulk(…)`
 

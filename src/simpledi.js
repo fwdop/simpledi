@@ -10,7 +10,10 @@ function SimpleDi() {
 
 var proto = SimpleDi.prototype;
 
-proto.register = function(name, factory, dependencies) {
+proto.register = function(name, factory, dependencies, overwrite) {
+  if(overwrite !== true && typeof this._registry[name] !== 'undefined') {
+    throw new Error('A dependency with this name is already registered!');
+  }
   if (typeof factory !== 'function') {
     throw new Error('factory must be a function!');
   }
