@@ -56,6 +56,17 @@ dependencyName | `string` | The name of the dependency
 
 Returns a previously registered dependency and resolves all dependencies.
 
+### `di.getResolvedDependencyCount()`
+
+Returns an object with numbers that state how often each dependency got resolved.
+
+```javascript
+
+// Example return value
+{ Foo: 1, Bar: 1, Baz: 1 }
+
+```
+
 ## Built-in factory functions
 
 ### `SimpleDi.always(…)`
