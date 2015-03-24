@@ -35,7 +35,7 @@ It throws an exception when a dependency with the same name already exists and o
 
 Name | Type | Description
 -----|------|------------
-dependencies | `array` | An array of dependencies containing arrays
+dependencies | `array` | An array of dependencies containing arrays each containing parameters for `di.register`
 
 #### Example:
 

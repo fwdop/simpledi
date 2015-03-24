@@ -113,4 +113,29 @@ describe('SimpleDi', function() {
     expect(di.get('Foo').baz instanceof Baz).toBe(true);
   });
 
+  it('counts how often dependencies where resolved', function() {
+    var obj = {foo: true};
+    di.register('foo', function() {
+      return obj;
+    });
+
+    di.get('foo');
+    expect(di.getResolvedDependencyCount().foo).toBe(1);
+  });
+
+  it('counts how often dependencies where resolved with deep dependencies', function() {
+    var obj = {foo: true};
+    di.register('foo', function() {
+      return obj;
+    });
+
+    di.register('bar', function() {
+      return obj;
+    }, ['foo']);
+
+    di.get('bar');
+    di.get('foo');
+    expect(di.getResolvedDependencyCount()).toEqual({foo: 2, bar: 1});
+  });
+
 });

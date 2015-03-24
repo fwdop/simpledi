@@ -6,6 +6,7 @@ if(typeof Function.prototype.bind === 'undefined') {
 
 function SimpleDi() {
   this._registry = {};
+  this._resolvedDependencies = {};
 }
 
 var proto = SimpleDi.prototype;
@@ -22,6 +23,7 @@ proto.register = function(name, factory, dependencies, overwrite) {
     factory: factory,
     dependencies: dependencies || []
   };
+  this._resolvedDependencies[name] = 0;
 };
 
 proto.registerBulk = function(deps) {
@@ -35,6 +37,7 @@ proto.get = function(name) {
   if (!registryItem) {
     throw new Error('couldn\'t find module: ' + name);
   }
+  this._countResolvedDependency(name);
   var resolvedDeps = [];
   var deps = registryItem.dependencies;
   for(var i = 0; i < deps.length; i++) {
@@ -48,6 +51,14 @@ proto.get = function(name) {
 
 proto.getRegistryItem = function(name) {
   return this._registry[name];
+};
+
+proto._countResolvedDependency = function(name) {
+  this._resolvedDependencies[name]++;
+};
+
+proto.getResolvedDependencyCount = function() {
+  return this._resolvedDependencies;
 };
 
 SimpleDi.withNew = function(Constructor) {
