@@ -15,7 +15,7 @@ SimpleDi is compatible with ES3 compliant browsers
 
 ## Api
 
-### `di.register(…)`
+### `di.register(dependencyName, factoryFunction[, dependencies[, overwrite]])`
 
 #### Parameters:
 
@@ -29,7 +29,7 @@ overwrite | `boolean` | *optional* This allows to explicitly overwrite dependenc
 Adds a dependency to the registry.
 It throws an exception when a dependency with the same name already exists and overwrite true is not passed.
 
-### `di.registerBulk(…)`
+### `di.registerBulk(dependencies)`
 
 #### Parameters:
 
@@ -46,7 +46,7 @@ di.registerBulk([
 ]);
 ```
 
-### `di.get(name, …restArgs)`
+### `di.get(name[, arg1[, arg2[, ...]]])`
 
 #### Parameters:
 
@@ -70,15 +70,15 @@ Returns an object with numbers that state how often each dependency got resolved
 
 ## Built-in factory functions
 
-### `SimpleDi.always(…)`
+### `SimpleDi.always(objectOrFunction)`
 
 Name | Type | Description
 -----|------|------------
-objectOrFunction | `anything` | Always returns this argument
+objectOrFunction | `mixed` | Always returns this argument
 
 A factory function that always returns the first argument when `di.get` is called.
 
-### `SimpleDi.withNew(…)`
+### `SimpleDi.withNew(Constructor)`
 
 Name | Type | Description
 -----|------|------------
