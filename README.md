@@ -46,13 +46,14 @@ di.registerBulk([
 ]);
 ```
 
-### `di.get(…)`
+### `di.get(name, …restArgs)`
 
 #### Parameters:
 
 Name | Type | Description
 -----|------|------------
 dependencyName | `string` | The name of the dependency
+arg1, arg2, ... | `mixed` | All args defined after the name will also be injected
 
 Returns a previously registered dependency and resolves all dependencies.
 
