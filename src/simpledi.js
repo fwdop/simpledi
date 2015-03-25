@@ -32,7 +32,9 @@ proto.registerBulk = function(deps) {
   }
 };
 
-proto.get = function(name) {
+proto.get = function() {
+  var args = Array.prototype.slice.call(arguments);
+  var name = args.shift();
   var registryItem = this.getRegistryItem(name);
   if (!registryItem) {
     throw new Error('couldn\'t find module: ' + name);
@@ -44,6 +46,8 @@ proto.get = function(name) {
     var name = deps[i];
     resolvedDeps.push(this.get(name));
   }
+
+  resolvedDeps = resolvedDeps.concat(args);
 
   var thisArg = {};
   return registryItem.factory.apply(thisArg, resolvedDeps);

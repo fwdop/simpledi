@@ -17,6 +17,41 @@ describe('SimpleDi', function() {
     expect(di.get('foo')).toBe(obj);
   });
 
+  it('passes an additional argument to a constructor', function() {
+    var barObj = {bar: true};
+    di.register('Foo', SimpleDi.withNew(function Foo(bar) {
+      expect(bar).toBe(barObj);
+    }));
+
+    di.get('Foo', barObj);
+  });
+
+  it('passes an additional argument to a constructor when a dependency is defined', function() {
+    var barObj = {bar: true};
+    var obj = {foo: true};
+    di.register('foo', function() {
+      return obj;
+    });
+    di.register('Foo', SimpleDi.withNew(function Foo(foo, bar) {
+      expect(bar).toBe(barObj);
+    }), ['foo']);
+
+    di.get('Foo', barObj);
+  });
+
+  it('passes additional arguments to a constructor when a dependency is defined', function() {
+    var barObj = {bar: true};
+    var obj = {foo: true};
+    di.register('foo', function() {
+      return obj;
+    });
+    di.register('Foo', SimpleDi.withNew(function Foo(foo, bar1, bar2) {
+      expect(bar2).toBe(barObj);
+    }), ['foo']);
+
+    di.get('Foo', barObj, barObj);
+  });
+
   it('throws when register implicitly overwrites a dependency', function() {
     var obj = {foo: true};
     di.register('foo', SimpleDi.always(obj));
