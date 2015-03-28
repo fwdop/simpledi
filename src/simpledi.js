@@ -1,8 +1,12 @@
 'use strict';
 
+var uuid = require('./utils').uuid;
+
 if(typeof Function.prototype.bind === 'undefined') {
   Function.prototype.bind = require('function-bind');
 }
+
+var _instanceCache = {};
 
 function SimpleDi() {
   this._registry = {};
@@ -43,8 +47,8 @@ proto.get = function() {
   var resolvedDeps = [];
   var deps = registryItem.dependencies;
   for(var i = 0; i < deps.length; i++) {
-    var name = deps[i];
-    resolvedDeps.push(this.get(name));
+    var dependencyName = deps[i];
+    resolvedDeps.push(this.get(dependencyName));
   }
 
   resolvedDeps = resolvedDeps.concat(args);
@@ -77,7 +81,19 @@ SimpleDi.withNew = function(Constructor) {
 SimpleDi.always = function(obj) {
   return function() {
     return obj;
-  }
+  };
+};
+
+SimpleDi.withNewOnce = function(Constructor) {
+  var constructorFactory = SimpleDi.withNew(Constructor);
+  var id = uuid();
+  return function() {
+    if(!_instanceCache[id]) {
+      var thisArg = {};
+      _instanceCache[id] = constructorFactory.apply(thisArg, arguments);
+    }
+    return _instanceCache[id];
+  };
 };
 
 module.exports = SimpleDi;

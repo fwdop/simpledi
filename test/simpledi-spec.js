@@ -173,4 +173,37 @@ describe('SimpleDi', function() {
     expect(di.getResolvedDependencyCount()).toEqual({foo: 2, bar: 1});
   });
 
+  describe('SimpleDi.withNewOnce', function() {
+    it('initializes a constructor with new once and then always returns the instance', function() {
+      function Foo() {
+        this.foo = true;
+      }
+
+      di.register('Foo', SimpleDi.withNewOnce(Foo));
+
+      var foo1 = di.get('Foo');
+      var foo2 = di.get('Foo');
+
+      expect(foo1).toBe(foo2);
+    });
+
+    it('returns always the same instance and resolves dependencies', function() {
+      function Foo(bar) {
+        this.foo = true;
+        this.bar = bar;
+      }
+
+      var bar = {
+        bar: true
+      };
+
+      di.register('Foo', SimpleDi.withNewOnce(Foo), ['bar']);
+      di.register('bar', SimpleDi.always(bar));
+
+      var foo = di.get('Foo');
+
+      expect(foo.bar).toBe(bar);
+    });
+  });
+
 });
