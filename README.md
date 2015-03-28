@@ -5,6 +5,15 @@
 
 SimpleDi is a very simple dependency injector.
 
+## Features
+
+- Simple API
+- Fully tested
+- Tiny (1.3kb gzipped)
+- Works in any ES3 compliant environment
+- Helps you find unresolved dependencies with `getResolvedDependencyCount`
+- Battle-tested (used in real-world projects)
+
 ## Installation
 
 `npm install simpledi`
