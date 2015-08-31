@@ -48,8 +48,9 @@ proto._resolve = function(name, args, dependencyChain) {
     throw new Error('couldn\'t find module: ' + name);
   }
   if(!dependencyChain) {
-    dependencyChain = [name];
+    dependencyChain = [];
   }
+  dependencyChain.push(name);
   this._countResolvedDependency(name);
   var resolvedDeps = [];
   var deps = registryItem.dependencies;
@@ -57,7 +58,10 @@ proto._resolve = function(name, args, dependencyChain) {
     var clonedDepdencyChain = dependencyChain.slice(0);
     var dependencyName = deps[i];
     if(clonedDepdencyChain.indexOf(dependencyName) !== -1) {
-      throw new Error('Circular Dependency');
+      var chain = this._stringifyDependencyChain(dependencyChain.concat([
+        dependencyName
+      ]));
+      throw new Error('Circular Dependency: ' + chain);
     }
     clonedDepdencyChain.push(dependencyChain);
     resolvedDeps.push(this._resolve(dependencyName, [], dependencyChain));
@@ -67,6 +71,10 @@ proto._resolve = function(name, args, dependencyChain) {
 
   var thisArg = {};
   return registryItem.factory.apply(thisArg, resolvedDeps);
+};
+
+proto._stringifyDependencyChain = function(dependencyChain) {
+  return dependencyChain.join(' => ');
 };
 
 proto.getRegistryItem = function(name) {

@@ -94,7 +94,7 @@ describe('SimpleDi', function() {
     expect(di.get('Foo').bar instanceof Bar).toBe(true);
   });
 
-  it('throws when trying to resolve a cicular dependency', function() {
+  it('throws when trying to resolve a direct cicular dependency', function() {
     function Foo(bar) {}
 
     function Bar(foo) {}
@@ -105,7 +105,35 @@ describe('SimpleDi', function() {
     try {
       di.get('Foo')
     } catch(e) {
-      expect(e.toString()).toEqual('Error: Circular Dependency');
+      expect(e.toString()).toEqual('Error: Circular Dependency: Foo => Bar => Foo');
+    }
+  });
+
+  it('throws when trying to resolve a cicular dependency', function() {
+    function Foo(bar) {}
+
+    function Bar(foo) {}
+
+    di.register('Foo', SimpleDi.withNew(Foo), ['Bar']);
+    di.register('Bar', SimpleDi.withNew(Bar), ['Baz']);
+    di.register('Baz', SimpleDi.withNew(Bar), ['Foo']);
+
+    try {
+      di.get('Foo')
+    } catch(e) {
+      expect(e.toString()).toEqual('Error: Circular Dependency: Foo => Bar => Baz => Foo');
+    }
+  });
+
+  it('throws when trying to resolve a dependency that is the same module that was requested', function() {
+    function Foo(bar) {}
+
+    di.register('Foo', SimpleDi.withNew(Foo), ['Foo']);
+
+    try {
+      di.get('Foo')
+    } catch(e) {
+      expect(e.toString()).toEqual('Error: Circular Dependency: Foo => Foo');
     }
   });
 
