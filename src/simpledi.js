@@ -61,7 +61,7 @@ proto._resolve = function(name, args, dependencyChain) {
       var chain = this._stringifyDependencyChain(dependencyChain.concat([
         dependencyName
       ]));
-      throw new Error('Circular Dependency: ' + chain);
+      throw new Error('Circular Dependency detected: ' + chain);
     }
     clonedDepdencyChain.push(dependencyChain);
     resolvedDeps.push(this._resolve(dependencyName, [], dependencyChain));

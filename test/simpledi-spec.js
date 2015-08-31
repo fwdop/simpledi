@@ -105,7 +105,7 @@ describe('SimpleDi', function() {
     try {
       di.get('Foo')
     } catch(e) {
-      expect(e.toString()).toEqual('Error: Circular Dependency: Foo => Bar => Foo');
+      expect(e.toString()).toEqual('Error: Circular Dependency detected: Foo => Bar => Foo');
     }
   });
 
@@ -121,7 +121,7 @@ describe('SimpleDi', function() {
     try {
       di.get('Foo')
     } catch(e) {
-      expect(e.toString()).toEqual('Error: Circular Dependency: Foo => Bar => Baz => Foo');
+      expect(e.toString()).toEqual('Error: Circular Dependency detected: Foo => Bar => Baz => Foo');
     }
   });
 
@@ -133,7 +133,7 @@ describe('SimpleDi', function() {
     try {
       di.get('Foo')
     } catch(e) {
-      expect(e.toString()).toEqual('Error: Circular Dependency: Foo => Foo');
+      expect(e.toString()).toEqual('Error: Circular Dependency detected: Foo => Foo');
     }
   });
 
