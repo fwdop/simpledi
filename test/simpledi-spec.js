@@ -94,6 +94,21 @@ describe('SimpleDi', function() {
     expect(di.get('Foo').bar instanceof Bar).toBe(true);
   });
 
+  it('throws when trying to resolve a cicular dependency', function() {
+    function Foo(bar) {}
+
+    function Bar(foo) {}
+
+    di.register('Foo', SimpleDi.withNew(Foo), ['Bar']);
+    di.register('Bar', SimpleDi.withNew(Bar), ['Foo']);
+
+    try {
+      di.get('Foo')
+    } catch(e) {
+      expect(e.toString()).toEqual('Error: Circular Dependency');
+    }
+  });
+
   it('resolves multiple dependencies', function() {
     function Foo(bar, baz) {
       this.bar = bar;

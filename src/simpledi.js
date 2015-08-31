@@ -39,16 +39,28 @@ proto.registerBulk = function(deps) {
 proto.get = function() {
   var args = Array.prototype.slice.call(arguments);
   var name = args.shift();
+  return this._resolve(name, args);
+};
+
+proto._resolve = function(name, args, dependencyChain) {
   var registryItem = this.getRegistryItem(name);
   if (!registryItem) {
     throw new Error('couldn\'t find module: ' + name);
+  }
+  if(!dependencyChain) {
+    dependencyChain = [name];
   }
   this._countResolvedDependency(name);
   var resolvedDeps = [];
   var deps = registryItem.dependencies;
   for(var i = 0; i < deps.length; i++) {
+    var clonedDepdencyChain = dependencyChain.slice(0);
     var dependencyName = deps[i];
-    resolvedDeps.push(this.get(dependencyName));
+    if(clonedDepdencyChain.indexOf(dependencyName) !== -1) {
+      throw new Error('Circular Dependency');
+    }
+    clonedDepdencyChain.push(dependencyChain);
+    resolvedDeps.push(this._resolve(dependencyName, [], dependencyChain));
   }
 
   resolvedDeps = resolvedDeps.concat(args);
