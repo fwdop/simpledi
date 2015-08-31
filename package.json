@@ -1,12 +1,17 @@
 {
   "name": "simpledi",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "A simple dependency injector",
   "main": "src/simpledi.js",
   "config": {
     "namespace": "simpleDi"
   },
-  "keywords": ["dependency", "di", "dependency-injection", "injector"],
+  "keywords": [
+    "dependency",
+    "di",
+    "dependency-injection",
+    "injector"
+  ],
   "scripts": {
     "lint": "jshint src test && jscs src test",
     "test": "istanbul test _mocha  -- --reporter dot --recursive -r setup-referee-sinon/globals test",
