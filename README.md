@@ -138,6 +138,7 @@ console.log(car.text);
 di.register('foo', SimpleDi.always({
     foo: true
 }), ['bar']);
+
 di.register('bar', SimpleDi.always({
     bar: true
 }), ['foo']);
