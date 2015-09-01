@@ -105,7 +105,7 @@ When `di.get` is called the *first time* this factory function will initialize
 the given constructor and for all upcoming calls it will always return the
 same instance. You can think of it as a singleton factory.
 
-## Example
+## Example 1
 
 ```javascript
 var SimpleDi = require('simpledi');
@@ -130,6 +130,19 @@ di.register('Car', SimpleDi.withNew(Car), ['Engine']);
 var car = di.get('Car');
 
 console.log(car.text);
+```
+
+## Example: Circular Dependency
+
+```javascript
+di.register('foo', SimpleDi.always({
+    foo: true
+}), ['bar']);
+di.register('bar', SimpleDi.always({
+    bar: true
+}), ['foo']);
+
+di.get('foo'); // throws "Circular Dependency detected: foo => bar => foo"
 ```
 
 ## License
