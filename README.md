@@ -5,6 +5,8 @@
 
 SimpleDi is a very simple dependency injector.
 
+There's also an async version available: [p7s1digital/scorpion](https://github.com/p7s1digital/scorpion)
+
 ## Features
 
 - **Simple API**
