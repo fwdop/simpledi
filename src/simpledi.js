@@ -98,23 +98,23 @@ SimpleDi.withNew = function(Constructor) {
   };
 };
 
-SimpleDi._withoutNew = function(factory) {
-  return function() {
-    var deps = Array.prototype.slice.call(arguments);
-    var thisArg = {};
-    var boundFactory = factory.bind.apply(factory, [thisArg].concat(deps));
-    return boundFactory();
-  };
-};
-
 SimpleDi.always = function(obj) {
   return function() {
     return obj;
   };
 };
 
+function callAndBindFactory(factory) {
+  return function() {
+    var deps = Array.prototype.slice.call(arguments);
+    var thisArg = {};
+    var boundFactory = factory.bind.apply(factory, [thisArg].concat(deps));
+    return boundFactory();
+  };
+}
+
 SimpleDi.once = function(factory) {
-  var boundFactory = SimpleDi._withoutNew(factory);
+  var boundFactory = callAndBindFactory(factory);
   var id = uuid();
   return function() {
     if (!_instanceCache[id]) {
