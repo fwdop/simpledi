@@ -95,44 +95,44 @@ describe('SimpleDi', function() {
   });
 
   it('throws when trying to resolve a direct cicular dependency', function() {
-    function Foo(bar) {}
+    function Foo(/*bar */) {}
 
-    function Bar(foo) {}
+    function Bar(/*foo */) {}
 
     di.register('Foo', SimpleDi.withNew(Foo), ['Bar']);
     di.register('Bar', SimpleDi.withNew(Bar), ['Foo']);
 
     try {
-      di.get('Foo')
-    } catch(e) {
+      di.get('Foo');
+    } catch (e) {
       expect(e.toString()).toEqual('Error: Circular Dependency detected: Foo => Bar => Foo');
     }
   });
 
   it('throws when trying to resolve a cicular dependency', function() {
-    function Foo(bar) {}
+    function Foo(/*bar */) {}
 
-    function Bar(foo) {}
+    function Bar(/*foo */) {}
 
     di.register('Foo', SimpleDi.withNew(Foo), ['Bar']);
     di.register('Bar', SimpleDi.withNew(Bar), ['Baz']);
     di.register('Baz', SimpleDi.withNew(Bar), ['Foo']);
 
     try {
-      di.get('Foo')
-    } catch(e) {
+      di.get('Foo');
+    } catch (e) {
       expect(e.toString()).toEqual('Error: Circular Dependency detected: Foo => Bar => Baz => Foo');
     }
   });
 
   it('throws when trying to resolve a dependency that is the same module that was requested', function() {
-    function Foo(bar) {}
+    function Foo(/*bar */) {}
 
     di.register('Foo', SimpleDi.withNew(Foo), ['Foo']);
 
     try {
-      di.get('Foo')
-    } catch(e) {
+      di.get('Foo');
+    } catch (e) {
       expect(e.toString()).toEqual('Error: Circular Dependency detected: Foo => Foo');
     }
   });
@@ -244,6 +244,40 @@ describe('SimpleDi', function() {
       di.register('bar', SimpleDi.always(bar));
 
       var foo = di.get('Foo');
+
+      expect(foo.bar).toBe(bar);
+    });
+  });
+
+  describe('SimpleDi.once', function() {
+    it('calls a factory once and then always returns the instance', function() {
+      function create() {
+        return {};
+      }
+
+      di.register('create', SimpleDi.once(create));
+
+      var foo1 = di.get('create');
+      var foo2 = di.get('create');
+
+      expect(foo1).toBe(foo2);
+    });
+
+    it('returns always the same instance and resolves dependencies', function() {
+      function create(bar) {
+        return {
+          bar: bar
+        };
+      }
+
+      var bar = {
+        bar: true
+      };
+
+      di.register('create', SimpleDi.once(create), ['bar']);
+      di.register('bar', SimpleDi.always(bar));
+
+      var foo = di.get('create');
 
       expect(foo.bar).toBe(bar);
     });
