@@ -103,9 +103,19 @@ Name | Type | Description
 -----|------|------------
 Constructor | `function` | A constructor function
 
-When `di.get` is called the *first time* this factory function will initialize 
+When `di.get` is called the *first time* this factory function will initialize
 the given constructor and for all upcoming calls it will always return the
 same instance. You can think of it as a singleton factory.
+
+### `SimpleDi.once(factory)`
+
+Name | Type | Description
+-----|------|------------
+factory | `function` | A factory function
+
+When `di.get` is called the *first time* this factory function will call
+the given factory and for all upcoming calls it will always return the
+same factory return value. You can think of it as a singleton factory.
 
 ## Example 1
 
