@@ -17,18 +17,18 @@
     "test": "istanbul test _mocha  -- --reporter dot --recursive -r setup-referee-sinon/globals test",
     "build": "mkdir -p dist && npm install && NODE_ENV=production browserify src/simpledi.js --insert-global-vars global -s $npm_package_config_namespace > dist/$npm_package_config_namespace.max.js && uglifyjs dist/$npm_package_config_namespace.max.js -cm > dist/$npm_package_config_namespace.js"
   },
-  "author": "Julian Hollmann <hollmann@uxebu.com>",
+  "author": "Julian Hollmann <julian@fwdoperating.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nerdbeere/simpledi.git"
+    "url": "https://github.com/fwdop/simpledi.git"
   },
   "devDependencies": {
-    "browserify": "^9.0.3",
-    "istanbul": "^0.3.6",
-    "jscs": "^1.11.3",
+    "browserify": "^16.2.3",
+    "istanbul": "^0.4.5",
+    "jscs": "^3.0.7",
     "jshint": "^2.6.0",
-    "mocha": "^2.1.0",
+    "mocha": "^5.2.0",
     "referee": "^1.1.1",
     "referee-sinon": "^1.0.2",
     "setup-referee-sinon": "^0.2.0",
