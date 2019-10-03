@@ -158,6 +158,18 @@ describe('SimpleDi', function() {
     expect(di.get('Foo').baz instanceof Baz).toBe(true);
   });
 
+  it('resolves multiple dependencies with complex trees', function() {
+    function Foo(/*bar, baz */) {}
+    function Bar() {}
+    function Baz(/*bar */) {}
+
+    di.register('Foo', SimpleDi.withNew(Foo), ['Bar', 'Baz']);
+    di.register('Baz', SimpleDi.withNew(Foo), ['Bar']);
+    di.register('Bar', SimpleDi.withNew(Foo), []);
+
+    expect(di.get('Foo')).not.toThrow();
+  });
+
   it('provides a static identity function that returns always the same object', function() {
     var dep = {
       foo: true
